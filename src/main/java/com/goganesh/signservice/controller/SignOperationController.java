@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/sign/operations/")
+@PreAuthorize("@environment.getProperty('com.goganesh.signservice.auth.key') == #header")
 public class SignOperationController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -26,7 +27,6 @@ public class SignOperationController {
     }
 
     @PostMapping(value = "/{operationId}", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    @PreAuthorize("@environment.getProperty('com.goganesh.signservice.auth.key') == #header")
     public SignResponse signOperation(@PathVariable String operationId,
                                       @RequestHeader(value = "Token", required = false) String header,
                                       @RequestBody MultiValueMap<String, String> signRequest) {
